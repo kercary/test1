@@ -1,0 +1,1029 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Harmony Sound — магазин музыкальных инструментов</title>
+  <style>
+    /* ---------- СБРОС И БАЗОВЫЕ СТИЛИ (Mobile First) ---------- */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+      background-color: #121212;
+      color: #eaeaea;
+      line-height: 1.5;
+      font-weight: 400;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    }
+
+    /* ---------- ТИПОГРАФИКА ---------- */
+    h1, h2, h3 {
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      line-height: 1.2;
+    }
+
+    h1 {
+      font-size: 2rem;
+    }
+
+    h2 {
+      font-size: 1.75rem;
+      margin-bottom: 1.5rem;
+    }
+
+    h3 {
+      font-size: 1.25rem;
+    }
+
+    p {
+      font-weight: 400;
+      color: #b0b0b0;
+    }
+
+    /* ---------- ОБЩИЕ КОНТЕЙНЕРЫ ---------- */
+    .container {
+      width: 100%;
+      padding-left: 1rem;
+      padding-right: 1rem;
+      margin-left: auto;
+      margin-right: auto;
+      max-width: 1280px;
+    }
+
+    section {
+      padding: 3rem 0;
+    }
+
+    /* ---------- АНИМАЦИЯ ПОЯВЛЕНИЯ (fade-in + slide-up) ---------- */
+    .fade-in-section {
+      opacity: 0;
+      transform: translateY(24px);
+      transition: opacity 0.7s cubic-bezier(0.25, 0.46, 0.45, 0.94),
+                  transform 0.7s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    }
+
+    .fade-in-section.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* ---------- HEADER ---------- */
+    .header {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      z-index: 1000;
+      padding: 1rem 0;
+      background-color: transparent;
+      transition: background-color 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .header.scrolled {
+      background-color: rgba(18, 18, 18, 0.95);
+      backdrop-filter: blur(8px);
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
+    }
+
+    .header__inner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 0.75rem;
+    }
+
+    .header__logo {
+      font-size: 1.25rem;
+      font-weight: 800;
+      color: #f5a623;
+      text-decoration: none;
+      letter-spacing: -0.03em;
+      white-space: nowrap;
+    }
+
+    .header__nav {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+    }
+
+    /* Кнопка "Каталог" — на мобильных только иконка */
+    .btn-catalog {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.4rem;
+      background: transparent;
+      border: 1px solid #3a3a3a;
+      color: #eaeaea;
+      padding: 0.6rem 0.8rem;
+      border-radius: 10px;
+      font-size: 0.9rem;
+      font-weight: 500;
+      cursor: pointer;
+      transition: background-color 0.25s ease, border-color 0.25s ease, color 0.25s ease;
+      min-height: 44px;
+      min-width: 44px;
+    }
+
+    .btn-catalog:hover,
+    .btn-catalog:focus-visible {
+      background-color: #f5a623;
+      border-color: #f5a623;
+      color: #121212;
+    }
+
+    .btn-catalog .btn-text {
+      display: none;
+    }
+
+    .icon-btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      background: transparent;
+      border: 1px solid #3a3a3a;
+      color: #eaeaea;
+      width: 44px;
+      height: 44px;
+      border-radius: 10px;
+      font-size: 1.2rem;
+      cursor: pointer;
+      transition: background-color 0.25s ease, border-color 0.25s ease, color 0.25s ease;
+      padding: 0;
+    }
+
+    .icon-btn:hover,
+    .icon-btn:focus-visible {
+      background-color: #f5a623;
+      border-color: #f5a623;
+      color: #121212;
+    }
+
+    /* ---------- HERO ---------- */
+    .hero {
+      position: relative;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      background: linear-gradient(145deg, #1a1a2e 0%, #16213e 50%, #0f0f1a 100%);
+      overflow: hidden;
+    }
+
+    /* Тёмный оверлей для оптимизации фона */
+    .hero::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(ellipse at 50% 40%, rgba(245, 166, 35, 0.08) 0%, transparent 70%);
+      pointer-events: none;
+    }
+
+    .hero__content {
+      position: relative;
+      z-index: 1;
+      padding: 2rem 1rem;
+      max-width: 800px;
+      margin: 0 auto;
+    }
+
+    .hero__title {
+      font-size: 2rem;
+      font-weight: 800;
+      margin-bottom: 1rem;
+      color: #ffffff;
+    }
+
+    .hero__subtitle {
+      font-size: 1rem;
+      color: #b8b8c8;
+      margin-bottom: 2rem;
+      max-width: 600px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    .btn-cta {
+      display: inline-block;
+      background-color: #f5a623;
+      color: #121212;
+      font-weight: 700;
+      font-size: 1rem;
+      padding: 1rem 2.5rem;
+      border-radius: 12px;
+      border: none;
+      cursor: pointer;
+      text-decoration: none;
+      transition: transform 0.25s ease, box-shadow 0.25s ease, background-color 0.25s ease;
+      min-height: 52px;
+    }
+
+    .btn-cta:hover,
+    .btn-cta:focus-visible {
+      background-color: #ffb83d;
+      transform: translateY(-2px);
+      box-shadow: 0 8px 24px rgba(245, 166, 35, 0.3);
+    }
+
+    .btn-cta:active {
+      transform: translateY(0);
+    }
+
+    /* ---------- КАТЕГОРИИ (сетка 1 колонка) ---------- */
+    .categories__grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 1rem;
+    }
+
+    .category-card {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      background-color: #1e1e1e;
+      border: 1px solid #2a2a2a;
+      border-radius: 16px;
+      padding: 2rem 1rem;
+      cursor: pointer;
+      /* Ссылка не должна выглядеть как текст: убираем подчёркивание и наследуем цвет */
+      text-decoration: none;
+      color: inherit;
+      transition: transform 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94),
+                  box-shadow 0.3s ease,
+                  border-color 0.3s ease;
+      min-height: 160px;
+    }
+
+    .category-card:hover {
+      transform: translateY(-6px);
+      box-shadow: 0 12px 32px rgba(0, 0, 0, 0.5);
+      border-color: #f5a623;
+    }
+
+    .category-card:focus-visible {
+      outline: 2px solid #f5a623;
+      outline-offset: 2px;
+      transform: translateY(-6px);
+      box-shadow: 0 12px 32px rgba(0, 0, 0, 0.5);
+    }
+
+    .category-card__icon {
+      font-size: 2.5rem;
+      margin-bottom: 0.75rem;
+      transition: transform 0.3s ease;
+    }
+
+    .category-card:hover .category-card__icon {
+      transform: scale(1.1);
+    }
+
+    .category-card__title {
+      font-size: 1.1rem;
+      font-weight: 600;
+      color: #eaeaea;
+    }
+
+    /* ---------- ХИТЫ ПРОДАЖ (горизонтальный скролл) ---------- */
+    .bestsellers__scroll {
+      display: flex;
+      gap: 1rem;
+      overflow-x: auto;
+      padding-bottom: 1rem;
+      scroll-snap-type: x mandatory;
+      -webkit-overflow-scrolling: touch;
+      scrollbar-width: thin;
+      scrollbar-color: #f5a623 #1e1e1e;
+    }
+
+    .bestsellers__scroll::-webkit-scrollbar {
+      height: 6px;
+    }
+
+    .bestsellers__scroll::-webkit-scrollbar-track {
+      background: #1e1e1e;
+      border-radius: 3px;
+    }
+
+    .bestsellers__scroll::-webkit-scrollbar-thumb {
+      background: #f5a623;
+      border-radius: 3px;
+    }
+
+    .product-card {
+      flex: 0 0 260px;
+      scroll-snap-align: start;
+      background-color: #1e1e1e;
+      border: 1px solid #2a2a2a;
+      border-radius: 16px;
+      padding: 1.5rem 1.25rem;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
+    }
+
+    .product-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 12px 28px rgba(0, 0, 0, 0.45);
+      border-color: #3a3a3a;
+    }
+
+    /* Плейсхолдер под будущее изображение товара */
+    .product-card__image {
+      width: 80px;
+      height: 80px;
+      background-color: #3a3a3a;
+      border-radius: 8px;
+      margin-bottom: 0.75rem;
+      flex-shrink: 0;
+      transition: transform 0.3s ease;
+    }
+
+    .product-card:hover .product-card__image {
+      transform: scale(1.02);
+    }
+
+    /* Название — вторичная информация: меньше и менее контрастно, чем цена */
+    .product-card__name {
+      font-size: 0.95rem;
+      font-weight: 600;
+      color: #e0e0e0;
+      margin-bottom: 0.35rem;
+    }
+
+    /* Цена — главный визуальный акцент карточки */
+    .product-card__price {
+      font-size: 1.25rem;
+      font-weight: 800;
+      color: #ffd15a;
+      margin-bottom: 1rem;
+    }
+
+    .btn-add {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      background-color: transparent;
+      border: 1.5px solid #f5a623;
+      color: #f5a623;
+      font-weight: 600;
+      font-size: 0.9rem;
+      padding: 0.65rem 1.5rem;
+      border-radius: 10px;
+      cursor: pointer;
+      transition: background-color 0.25s ease, color 0.25s ease, transform 0.2s ease;
+      min-height: 44px;
+      width: 100%;
+      max-width: 200px;
+    }
+
+    .btn-add:hover,
+    .btn-add:focus-visible {
+      background-color: #f5a623;
+      color: #121212;
+      transform: scale(1.02);
+    }
+
+    /* ---------- ПРЕИМУЩЕСТВА (3 колонки) ---------- */
+    .features__grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 1.5rem;
+    }
+
+    .feature-item {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      padding: 2rem 1.25rem;
+      background-color: #1a1a1a;
+      border-radius: 16px;
+      border: 1px solid #252525;
+      transition: border-color 0.3s ease;
+    }
+
+    .feature-item:hover {
+      border-color: #3a3a3a;
+    }
+
+    .feature-item__icon {
+      font-size: 2.5rem;
+      margin-bottom: 1rem;
+    }
+
+    .feature-item__title {
+      font-size: 1.15rem;
+      font-weight: 600;
+      margin-bottom: 0.5rem;
+      color: #ffffff;
+    }
+
+    .feature-item__text {
+      font-size: 0.95rem;
+      color: #9a9a9a;
+    }
+
+    /* ---------- О НАС / ПОДПИСКА ---------- */
+    .about {
+      background-color: #181818;
+      border-top: 1px solid #252525;
+      border-bottom: 1px solid #252525;
+    }
+
+    .about__inner {
+      display: flex;
+      flex-direction: column;
+      gap: 2rem;
+    }
+
+    .about__text h2 {
+      margin-bottom: 1rem;
+    }
+
+    .about__text p {
+      font-size: 1rem;
+      margin-bottom: 0.75rem;
+    }
+
+    .subscribe-form {
+      display: flex;
+      flex-direction: column;
+      gap: 0.75rem;
+      width: 100%;
+    }
+
+    .subscribe-form__input {
+      padding: 0.9rem 1rem;
+      border-radius: 10px;
+      border: 1px solid #3a3a3a;
+      background-color: #121212;
+      color: #eaeaea;
+      font-size: 1rem;
+      font-family: inherit;
+      transition: border-color 0.25s ease, box-shadow 0.25s ease;
+      min-height: 52px;
+    }
+
+    .subscribe-form__input::placeholder {
+      color: #6a6a6a;
+    }
+
+    .subscribe-form__input:focus {
+      outline: none;
+      border-color: #f5a623;
+      box-shadow: 0 0 0 3px rgba(245, 166, 35, 0.2);
+    }
+
+    .btn-subscribe {
+      background-color: #f5a623;
+      color: #121212;
+      font-weight: 700;
+      font-size: 1rem;
+      padding: 0.9rem 2rem;
+      border-radius: 10px;
+      border: none;
+      cursor: pointer;
+      transition: background-color 0.25s ease, transform 0.2s ease, box-shadow 0.25s ease;
+      min-height: 52px;
+      white-space: nowrap;
+    }
+
+    .btn-subscribe:hover,
+    .btn-subscribe:focus-visible {
+      background-color: #ffb83d;
+      transform: translateY(-2px);
+      box-shadow: 0 8px 24px rgba(245, 166, 35, 0.25);
+    }
+
+    /* ---------- FOOTER ---------- */
+    .footer {
+      background-color: #0e0e0e;
+      padding: 3rem 0 2rem;
+      border-top: 1px solid #1e1e1e;
+    }
+
+    .footer__grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 2rem;
+      margin-bottom: 2rem;
+    }
+
+    .footer__col h4 {
+      font-size: 1rem;
+      font-weight: 700;
+      color: #f5a623;
+      margin-bottom: 0.75rem;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    .footer__col p,
+    .footer__col a {
+      display: block;
+      color: #9a9a9a;
+      text-decoration: none;
+      font-size: 0.95rem;
+      margin-bottom: 0.4rem;
+      transition: color 0.2s ease;
+    }
+
+    .footer__col a:hover,
+    .footer__col a:focus-visible {
+      color: #f5a623;
+    }
+
+    .footer__socials {
+      display: flex;
+      gap: 0.75rem;
+      margin-top: 0.5rem;
+    }
+
+    .footer__social-link {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 40px;
+      height: 40px;
+      border-radius: 10px;
+      background-color: #1e1e1e;
+      border: 1px solid #2a2a2a;
+      color: #eaeaea;
+      font-size: 1.1rem;
+      text-decoration: none;
+      transition: background-color 0.25s ease, border-color 0.25s ease, color 0.25s ease;
+    }
+
+    .footer__social-link:hover,
+    .footer__social-link:focus-visible {
+      background-color: #f5a623;
+      border-color: #f5a623;
+      color: #121212;
+    }
+
+    .footer__bottom {
+      text-align: center;
+      padding-top: 1.5rem;
+      border-top: 1px solid #1e1e1e;
+      color: #6a6a6a;
+      font-size: 0.85rem;
+    }
+
+    /* ---------- FOCUS-VISIBLE ДЛЯ ВСЕХ ИНТЕРАКТИВНЫХ ---------- */
+    a:focus-visible,
+    button:focus-visible,
+    input:focus-visible {
+      outline: 2px solid #f5a623;
+      outline-offset: 2px;
+    }
+
+    /* Убираем двойной outline у кнопок, у которых уже есть свой */
+    .btn-cta:focus-visible,
+    .btn-add:focus-visible,
+    .btn-subscribe:focus-visible,
+    .btn-catalog:focus-visible,
+    .icon-btn:focus-visible,
+    .category-card:focus-visible,
+    .footer__social-link:focus-visible {
+      outline: 2px solid #f5a623;
+      outline-offset: 2px;
+    }
+
+    /* ---------- АДАПТИВ: 768px (планшеты) ---------- */
+    @media (min-width: 768px) {
+      h1 {
+        font-size: 2.75rem;
+      }
+
+      h2 {
+        font-size: 2rem;
+      }
+
+      .hero__title {
+        font-size: 2.75rem;
+      }
+
+      .hero__subtitle {
+        font-size: 1.15rem;
+      }
+
+      /* Каталог — показываем текст */
+      .btn-catalog .btn-text {
+        display: inline;
+      }
+
+      .btn-catalog {
+        padding: 0.6rem 1.2rem;
+      }
+
+      /* Категории: 2 колонки */
+      .categories__grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 1.25rem;
+      }
+
+      /* Преимущества: 2 колонки */
+      .features__grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+
+      /* О нас: две колонки */
+      .about__inner {
+        flex-direction: row;
+        align-items: center;
+        gap: 3rem;
+      }
+
+      .about__text {
+        flex: 1 1 55%;
+      }
+
+      .about__form {
+        flex: 1 1 45%;
+      }
+
+      .subscribe-form {
+        flex-direction: row;
+      }
+
+      .subscribe-form__input {
+        flex: 1;
+      }
+
+      /* Футер: 3 колонки */
+      .footer__grid {
+        grid-template-columns: repeat(3, 1fr);
+      }
+    }
+
+    /* ---------- АДАПТИВ: 1024px (десктопы) ---------- */
+    @media (min-width: 1024px) {
+      h1 {
+        font-size: 3.5rem;
+      }
+
+      h2 {
+        font-size: 2.25rem;
+      }
+
+      .hero__title {
+        font-size: 3.5rem;
+      }
+
+      .hero__subtitle {
+        font-size: 1.25rem;
+      }
+
+      section {
+        padding: 5rem 0;
+      }
+
+      .container {
+        padding-left: 2rem;
+        padding-right: 2rem;
+      }
+
+      /* Категории: 4 колонки */
+      .categories__grid {
+        grid-template-columns: repeat(4, 1fr);
+        gap: 1.5rem;
+      }
+
+      /* Преимущества: 3 колонки */
+      .features__grid {
+        grid-template-columns: repeat(3, 1fr);
+        gap: 2rem;
+      }
+
+      /* Хиты продаж: карточки чуть шире */
+      .product-card {
+        flex: 0 0 280px;
+      }
+
+      .header__logo {
+        font-size: 1.5rem;
+      }
+
+      .header__inner {
+        gap: 1.5rem;
+      }
+
+      .header__nav {
+        gap: 1rem;
+      }
+    }
+
+    /* ---------- ПРЕДПОЧТЕНИЕ УМЕНЬШЕННОЙ АНИМАЦИИ ---------- */
+    @media (prefers-reduced-motion: reduce) {
+      *,
+      *::before,
+      *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+        scroll-behavior: auto !important;
+      }
+
+      .fade-in-section {
+        opacity: 1;
+        transform: none;
+      }
+    }
+
+    /* ---------- УТИЛИТА: ВИЗУАЛЬНО СКРЫТЫЙ ТЕКСТ ДЛЯ A11Y ---------- */
+    .visually-hidden {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      padding: 0;
+      margin: -1px;
+      overflow: hidden;
+      clip: rect(0, 0, 0, 0);
+      white-space: nowrap;
+      border: 0;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ========== HEADER ========== -->
+  <header class="header" id="header">
+    <div class="container header__inner">
+      <a href="#" class="header__logo" aria-label="Harmony Sound — на главную">Harmony Sound</a>
+      <nav class="header__nav" aria-label="Основная навигация">
+        <button class="btn-catalog" type="button" aria-label="Открыть каталог">
+          <span aria-hidden="true">☰</span>
+          <span class="btn-text">Каталог</span>
+        </button>
+        <button class="icon-btn" type="button" aria-label="Поиск по сайту">
+          <span aria-hidden="true">🔍</span>
+        </button>
+        <button class="icon-btn" type="button" aria-label="Корзина покупок">
+          <span aria-hidden="true">🛒</span>
+        </button>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <!-- ========== HERO ========== -->
+    <section class="hero" id="hero">
+      <div class="hero__content">
+        <h1 class="hero__title">Инструменты, которые звучат в вашем сердце</h1>
+        <p class="hero__subtitle">Гитары, клавишные, ударные и профессиональное оборудование от мировых брендов</p>
+        <a href="#categories" class="btn-cta">Смотреть каталог</a>
+      </div>
+    </section>
+
+    <!-- ========== КАТЕГОРИИ ========== -->
+    <section class="categories fade-in-section" id="categories">
+      <div class="container">
+        <h2>Категории</h2>
+        <div class="categories__grid">
+          <a href="#bestsellers" class="category-card" aria-label="Электрогитары">
+            <span class="category-card__icon" aria-hidden="true">🎸</span>
+            <span class="category-card__title">Электрогитары</span>
+          </a>
+          <a href="#bestsellers" class="category-card" aria-label="Клавишные">
+            <span class="category-card__icon" aria-hidden="true">🎹</span>
+            <span class="category-card__title">Клавишные</span>
+          </a>
+          <a href="#bestsellers" class="category-card" aria-label="Ударные">
+            <span class="category-card__icon" aria-hidden="true">🥁</span>
+            <span class="category-card__title">Ударные</span>
+          </a>
+          <a href="#bestsellers" class="category-card" aria-label="Студия и звук">
+            <span class="category-card__icon" aria-hidden="true">🎚️</span>
+            <span class="category-card__title">Студия и звук</span>
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <!-- ========== ХИТЫ ПРОДАЖ ========== -->
+    <section class="bestsellers fade-in-section" id="bestsellers">
+      <div class="container">
+        <h2>Хиты продаж</h2>
+        <div class="bestsellers__scroll" role="list" aria-label="Популярные товары">
+          <article class="product-card" role="listitem">
+            <div class="product-card__image" aria-hidden="true"></div>
+            <h3 class="product-card__name">Fender Stratocaster</h3>
+            <p class="product-card__price">89 990 ₽</p>
+            <button class="btn-add" type="button" aria-label="Добавить Fender Stratocaster в корзину">В корзину</button>
+          </article>
+          <article class="product-card" role="listitem">
+            <div class="product-card__image" aria-hidden="true"></div>
+            <h3 class="product-card__name">Yamaha P-125</h3>
+            <p class="product-card__price">54 500 ₽</p>
+            <button class="btn-add" type="button" aria-label="Добавить Yamaha P-125 в корзину">В корзину</button>
+          </article>
+          <article class="product-card" role="listitem">
+            <div class="product-card__image" aria-hidden="true"></div>
+            <h3 class="product-card__name">Pearl Export EXX</h3>
+            <p class="product-card__price">72 300 ₽</p>
+            <button class="btn-add" type="button" aria-label="Добавить Pearl Export EXX в корзину">В корзину</button>
+          </article>
+          <article class="product-card" role="listitem">
+            <div class="product-card__image" aria-hidden="true"></div>
+            <h3 class="product-card__name">Shure SM7B</h3>
+            <p class="product-card__price">42 990 ₽</p>
+            <button class="btn-add" type="button" aria-label="Добавить Shure SM7B в корзину">В корзину</button>
+          </article>
+          <article class="product-card" role="listitem">
+            <div class="product-card__image" aria-hidden="true"></div>
+            <h3 class="product-card__name">Gibson Les Paul</h3>
+            <p class="product-card__price">129 000 ₽</p>
+            <button class="btn-add" type="button" aria-label="Добавить Gibson Les Paul в корзину">В корзину</button>
+          </article>
+          <article class="product-card" role="listitem">
+            <div class="product-card__image" aria-hidden="true"></div>
+            <h3 class="product-card__name">Focusrite Scarlett</h3>
+            <p class="product-card__price">18 700 ₽</p>
+            <button class="btn-add" type="button" aria-label="Добавить Focusrite Scarlett в корзину">В корзину</button>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- ========== ПРЕИМУЩЕСТВА ========== -->
+    <section class="features fade-in-section" id="features">
+      <div class="container">
+        <h2>Почему мы</h2>
+        <div class="features__grid">
+          <div class="feature-item">
+            <span class="feature-item__icon" aria-hidden="true">🛡️</span>
+            <h3 class="feature-item__title">Гарантия качества</h3>
+            <p class="feature-item__text">Только оригинальные инструменты от проверенных мировых производителей с официальной гарантией.</p>
+          </div>
+          <div class="feature-item">
+            <span class="feature-item__icon" aria-hidden="true">🚚</span>
+            <h3 class="feature-item__title">Быстрая доставка</h3>
+            <p class="feature-item__text">Доставим заказ по Москве в день покупки, по России — от 2 дней. Бережная упаковка каждого инструмента.</p>
+          </div>
+          <div class="feature-item">
+            <span class="feature-item__icon" aria-hidden="true">🎯</span>
+            <h3 class="feature-item__title">Помощь в подборе</h3>
+            <p class="feature-item__text">Наши эксперты помогут выбрать инструмент под ваш уровень, стиль и бюджет. Консультация бесплатна.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ========== О НАС / ПОДПИСКА ========== -->
+    <section class="about fade-in-section" id="about">
+      <div class="container about__inner">
+        <div class="about__text">
+          <h2>О Harmony Sound</h2>
+          <p>Мы — команда музыкантов и звукорежиссёров, которая более 10 лет помогает людям находить свой звук. В нашем каталоге — гитары, клавишные, ударные и студийное оборудование для новичков и профессионалов.</p>
+          <p>Подпишитесь на рассылку, чтобы первыми узнавать о скидках, новых поступлениях и мастер-классах.</p>
+        </div>
+        <div class="about__form">
+          <form class="subscribe-form" action="#" method="post" aria-label="Форма подписки на скидки">
+            <label for="email" class="visually-hidden">Ваш email</label>
+            <input class="subscribe-form__input" type="email" id="email" name="email" placeholder="Ваш email" required autocomplete="email">
+            <button class="btn-subscribe" type="submit">Подписаться на скидки</button>
+          </form>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- ========== FOOTER ========== -->
+  <footer class="footer" id="footer">
+    <div class="container">
+      <div class="footer__grid">
+        <div class="footer__col">
+          <h4>Контакты</h4>
+          <p>+7 (999) 123-45-67</p>
+          <p>info@harmonysound.ru</p>
+          <p>Москва, ул. Музыкальная, 15</p>
+        </div>
+        <div class="footer__col">
+          <h4>Время работы</h4>
+          <p>Пн–Пт: 10:00 — 21:00</p>
+          <p>Сб: 11:00 — 20:00</p>
+          <p>Вс: 12:00 — 19:00</p>
+        </div>
+        <div class="footer__col">
+          <h4>Соцсети</h4>
+          <div class="footer__socials">
+            <a href="#" class="footer__social-link" aria-label="ВКонтакте">VK</a>
+            <a href="#" class="footer__social-link" aria-label="Telegram">TG</a>
+            <a href="#" class="footer__social-link" aria-label="YouTube">YT</a>
+          </div>
+        </div>
+      </div>
+      <div class="footer__bottom">
+        <p>© 2025 Harmony Sound. Все права защищены.</p>
+      </div>
+    </div>
+  </footer>
+
+  <!-- ========== JAVASCRIPT ========== -->
+  <script>
+    (function() {
+      'use strict';
+
+      // ---------- 1. Фиксация шапки при скролле ----------
+      var header = document.getElementById('header');
+      var scrollThreshold = 50;
+
+      function handleScroll() {
+        if (window.scrollY > scrollThreshold) {
+          header.classList.add('scrolled');
+        } else {
+          header.classList.remove('scrolled');
+        }
+      }
+
+      // Слушаем скролл с оптимизацией через requestAnimationFrame
+      var ticking = false;
+      window.addEventListener('scroll', function() {
+        if (!ticking) {
+          window.requestAnimationFrame(function() {
+            handleScroll();
+            ticking = false;
+          });
+          ticking = true;
+        }
+      }, { passive: true });
+
+      // Проверяем при загрузке (если страница открыта не с начала)
+      handleScroll();
+
+      // ---------- 2. Плавный скролл к якорям ----------
+      // Перехватываем клики по ссылкам, ведущим на якоря
+      document.addEventListener('click', function(e) {
+        var target = e.target.closest('a[href^="#"]');
+        if (!target) return;
+
+        var href = target.getAttribute('href');
+        if (href === '#' || href === '') return;
+
+        var targetElement = document.querySelector(href);
+        if (!targetElement) return;
+
+        e.preventDefault();
+
+        // Учитываем высоту фиксированной шапки
+        var headerHeight = header.offsetHeight;
+        var targetPosition = targetElement.getBoundingClientRect().top + window.pageYOffset - headerHeight;
+
+        window.scrollTo({
+          top: targetPosition,
+          behavior: 'smooth'
+        });
+      });
+
+      // ---------- 3. Анимация появления секций при скролле ----------
+      // IntersectionObserver для fade-in + slide-up
+      if ('IntersectionObserver' in window) {
+        var sections = document.querySelectorAll('.fade-in-section');
+
+        var observerOptions = {
+          root: null,
+          rootMargin: '0px 0px -60px 0px',
+          threshold: 0.1
+        };
+
+        var observer = new IntersectionObserver(function(entries) {
+          entries.forEach(function(entry) {
+            if (entry.isIntersecting) {
+              entry.target.classList.add('visible');
+              observer.unobserve(entry.target); // Анимируем только один раз
+            }
+          });
+        }, observerOptions);
+
+        sections.forEach(function(section) {
+          observer.observe(section);
+        });
+      } else {
+        // Фолбэк для старых браузеров — просто показываем всё
+        document.querySelectorAll('.fade-in-section').forEach(function(section) {
+          section.classList.add('visible');
+        });
+      }
+
+    })();
+  </script>
+
+</body>
+</html>
