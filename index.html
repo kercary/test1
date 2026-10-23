@@ -350,14 +350,16 @@
       border-color: #3a3a3a;
     }
 
-    /* Плейсхолдер под будущее изображение товара */
+    /* Изображение товара */
     .product-card__image {
-      width: 80px;
-      height: 80px;
+      width: 140px;
+      height: 140px;
       background-color: #3a3a3a;
-      border-radius: 8px;
+      border-radius: 12px;
       margin-bottom: 0.75rem;
       flex-shrink: 0;
+      object-fit: cover;
+      display: block;
       transition: transform 0.3s ease;
     }
 
@@ -817,37 +819,37 @@
         <h2>Хиты продаж</h2>
         <div class="bestsellers__scroll" role="list" aria-label="Популярные товары">
           <article class="product-card" role="listitem">
-            <div class="product-card__image" aria-hidden="true"></div>
+            <img class="product-card__image" src="Icons/guitar_icon.jpg" alt="Fender Stratocaster" loading="lazy">
             <h3 class="product-card__name">Fender Stratocaster</h3>
             <p class="product-card__price">89 990 ₽</p>
             <button class="btn-add" type="button" aria-label="Добавить Fender Stratocaster в корзину">В корзину</button>
           </article>
           <article class="product-card" role="listitem">
-            <div class="product-card__image" aria-hidden="true"></div>
+            <img class="product-card__image" src="Icons/piano_icon.jpg" alt="Yamaha P-125" loading="lazy">
             <h3 class="product-card__name">Yamaha P-125</h3>
             <p class="product-card__price">54 500 ₽</p>
             <button class="btn-add" type="button" aria-label="Добавить Yamaha P-125 в корзину">В корзину</button>
           </article>
           <article class="product-card" role="listitem">
-            <div class="product-card__image" aria-hidden="true"></div>
+            <img class="product-card__image" src="Icons/drums_icon.jpg" alt="Pearl Export EXX" loading="lazy">
             <h3 class="product-card__name">Pearl Export EXX</h3>
             <p class="product-card__price">72 300 ₽</p>
             <button class="btn-add" type="button" aria-label="Добавить Pearl Export EXX в корзину">В корзину</button>
           </article>
           <article class="product-card" role="listitem">
-            <div class="product-card__image" aria-hidden="true"></div>
+            <img class="product-card__image" src="Icons/micro_icon.jpg" alt="Shure SM7B" loading="lazy">
             <h3 class="product-card__name">Shure SM7B</h3>
             <p class="product-card__price">42 990 ₽</p>
             <button class="btn-add" type="button" aria-label="Добавить Shure SM7B в корзину">В корзину</button>
           </article>
           <article class="product-card" role="listitem">
-            <div class="product-card__image" aria-hidden="true"></div>
+            <img class="product-card__image" src="Icons/guitar2_icon.jpg" alt="Gibson Les Paul" loading="lazy">
             <h3 class="product-card__name">Gibson Les Paul</h3>
             <p class="product-card__price">129 000 ₽</p>
             <button class="btn-add" type="button" aria-label="Добавить Gibson Les Paul в корзину">В корзину</button>
           </article>
           <article class="product-card" role="listitem">
-            <div class="product-card__image" aria-hidden="true"></div>
+            <img class="product-card__image" src="Icons/interface_icon.jpg" alt="Focusrite Scarlett" loading="lazy">
             <h3 class="product-card__name">Focusrite Scarlett</h3>
             <p class="product-card__price">18 700 ₽</p>
             <button class="btn-add" type="button" aria-label="Добавить Focusrite Scarlett в корзину">В корзину</button>
